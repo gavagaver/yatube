@@ -27,12 +27,12 @@ class PostsURLsTests(TestCase):
         )
 
     def setUp(self):
+        cache.clear()
         self.guest_client = Client()
         self.authorized_client = Client()
         self.authorized_client.force_login(PostsURLsTests.author)
         self.authorized_client_not_author = Client()
         self.authorized_client_not_author.force_login(PostsURLsTests.user)
-        cache.clear()
 
     def test_urls_access_for_guest(self):
         """Страницы доступны гостю."""
@@ -207,5 +207,6 @@ class PostsURLsTests(TestCase):
         }
         for address, template in templates_url_names.items():
             with self.subTest(address=address):
+                cache.clear()
                 response = self.authorized_client.get(address)
                 self.assertTemplateUsed(response, template)
