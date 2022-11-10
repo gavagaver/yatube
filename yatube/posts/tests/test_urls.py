@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.cache import cache
 from django.test import TestCase, Client
 from http import HTTPStatus
 
@@ -31,6 +32,7 @@ class PostsURLsTests(TestCase):
         self.authorized_client.force_login(PostsURLsTests.author)
         self.authorized_client_not_author = Client()
         self.authorized_client_not_author.force_login(PostsURLsTests.user)
+        cache.clear()
 
     def test_urls_access_for_guest(self):
         """Страницы доступны гостю."""

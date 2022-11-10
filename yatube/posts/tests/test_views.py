@@ -99,12 +99,12 @@ class PostsPagesTests(TestCase):
         )
         self.assertEqual(
             response.context['page_obj'][0].text,
-            self.post.text,
+            PostsPagesTests.post.text,
             'Текст поста не соответствует ожидаемому'
         )
         self.assertEqual(
-            response.context.get('page_obj')[0].image,
-            self.post.image,
+            response.context['page_obj'][0].image,
+            PostsPagesTests.post.image,
             'Картинка поста не соответствует ожидаемой'
         )
 
@@ -123,12 +123,12 @@ class PostsPagesTests(TestCase):
         )
         self.assertEqual(
             response.context['page_obj'][0].text,
-            self.post.text,
+            PostsPagesTests.post.text,
             'Текст поста не соответствует ожидаемому'
         )
         self.assertEqual(
-            response.context.get('page_obj')[0].image,
-            self.post.image,
+            response.context['page_obj'][0].image,
+            PostsPagesTests.post.image,
             'Картинка поста не соответствует ожидаемой'
         )
         values = {
@@ -158,12 +158,12 @@ class PostsPagesTests(TestCase):
         )
         self.assertEqual(
             response.context.get('page_obj')[0].text,
-            self.post.text,
+            PostsPagesTests.post.text,
             'Текст поста не соответствует ожидаемому'
         )
         self.assertEqual(
-            response.context.get('page_obj')[0].image,
-            self.post.image,
+            response.context['page_obj'][0].image,
+            PostsPagesTests.post.image,
             'Картинка поста не соответствует ожидаемой'
         )
 
@@ -176,13 +176,13 @@ class PostsPagesTests(TestCase):
             )
         )
         self.assertIsInstance(
-            response.context['post'],
+            response.context.get('post'),
             Post,
             'Класс объекта не соответствует ожидаемому'
         )
         self.assertEqual(
-            response.context.get('page_obj')[0].image,
-            self.post.image,
+            response.context.get('post').image,
+            PostsPagesTests.post.image,
             'Картинка поста не соответствует ожидаемой'
         )
         values = {
@@ -219,6 +219,7 @@ class PostsPagesTests(TestCase):
         fields = {
             'text': forms.fields.CharField,
             'group': forms.fields.ChoiceField,
+            'image': forms.fields.ImageField,
         }
         for field, expected in fields.items():
             with self.subTest(field=field):
@@ -239,6 +240,7 @@ class PostsPagesTests(TestCase):
         fields = {
             'text': forms.fields.CharField,
             'group': forms.fields.ChoiceField,
+            'image': forms.fields.ImageField,
         }
         for field, expected in fields.items():
             with self.subTest(field=field):
@@ -269,6 +271,7 @@ class PaginationViewsTests(TestCase):
 
     def setUp(self):
         self.guest = Client()
+        cache.clear()
 
     def test_pagination_correct(self):
         """Пагинация страниц соответствует ожидаемой"""
@@ -326,6 +329,7 @@ class GroupPostTests(TestCase):
         self.authorized_client.force_login(GroupPostTests.author)
         self.authorized_client_not_author = Client()
         self.authorized_client_not_author.force_login(GroupPostTests.user)
+        cache.clear()
 
     def test_post_display(self):
         """Пост появляется на нужных страницах"""
