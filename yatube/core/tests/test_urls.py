@@ -1,14 +1,16 @@
 from django.test import TestCase
-from django.urls import reverse
+from http import HTTPStatus
 
 
-class CoreURLsTests(TestCase):
-    def test_urls_uses_correct_template(self):
-        """URL-адрес использует соответствующий шаблон."""
-        templates_url_names = {
-            reverse('/not_exists/'): 'core/404.html',
-        }
-        for address, template in templates_url_names.items():
-            with self.subTest(address=address):
-                response = self.client.get(address)
-                self.assertTemplateUsed(response, template)
+class CoreUrlTests(TestCase):
+    def test_page_not_found(self):
+        response = self.client.get('/page_not_found/')
+        self.assertEqual(
+            response.status_code, HTTPStatus.NOT_FOUND,
+            'Статус-код ответа не соответствует ожидаемому'
+        )
+        self.assertTemplateUsed(
+            response,
+            'core/404.html',
+            'Шаблон ответа не соответствует ожидаемому'
+        )
