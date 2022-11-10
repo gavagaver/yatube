@@ -1,3 +1,4 @@
+from django.core.cache import cache
 from django.test import TestCase, Client
 from django.urls import reverse
 
@@ -5,6 +6,7 @@ from django.urls import reverse
 class CoreURLsTests(TestCase):
     def setUp(self):
         self.guest_client = Client()
+        cache.clear()
 
     def test_urls_uses_correct_template(self):
         """URL-адрес использует соответствующий шаблон."""

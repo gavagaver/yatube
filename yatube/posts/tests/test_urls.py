@@ -207,6 +207,5 @@ class PostsURLsTests(TestCase):
         }
         for address, template in templates_url_names.items():
             with self.subTest(address=address):
-                cache.clear()
                 response = self.authorized_client.get(address)
                 self.assertTemplateUsed(response, template)
