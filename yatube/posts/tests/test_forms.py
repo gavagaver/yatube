@@ -15,6 +15,7 @@ TEMP_MEDIA_ROOT = tempfile.mkdtemp(dir=settings.BASE_DIR)
 
 CURRENT_TEXT = 'Текущий текст поста'
 NEW_TEXT = 'Новый текст поста'
+EMPTY = 0
 
 
 @override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
@@ -149,6 +150,22 @@ class PostFormTests(TestCase):
                 group=PostFormTests.new_group
             ).exists(),
             'Отредактированный пост не соответствует ожидаемому'
+        )
+        old_group_response = self.authorized_client.get(
+            reverse('posts:group_list', args=(self.current_group.slug,))
+        )
+        self.assertEqual(
+            old_group_response.context['page_obj'].paginator.count,
+            EMPTY,
+            'Пост не исчез со страницы старой группы',
+        )
+        new_group_response = self.authorized_client.get(
+            reverse('posts:group_list', args=(self.new_group.slug,))
+        )
+        self.assertNotEqual(
+            new_group_response.context['page_obj'].paginator.count,
+            EMPTY,
+            'Пост не появился на странице новой группы',
         )
 
     def test_add_comment(self):

@@ -260,14 +260,14 @@ class PaginationViewsTests(TestCase):
             title='Название тестовой группы',
             slug='test-link',
         )
-        posts = []
-        for number in range(1, COUNT_TEST_POSTS + 1):
-            post = Post.objects.create(
+        posts = [
+            Post(
                 text=f'Текст тестового поста №{number}',
-                author=PaginationViewsTests.author,
                 group=PaginationViewsTests.group,
-            )
-            posts.append(post)
+                author=PaginationViewsTests.author,
+            ) for number in range(COUNT_TEST_POSTS)
+        ]
+        Post.objects.bulk_create(posts)
 
     def setUp(self):
         self.guest = Client()

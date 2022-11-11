@@ -14,8 +14,7 @@ User = get_user_model()
 def ppaginator(request, post_list):
     paginator = Paginator(post_list, POST_PER_PAGE)
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return page_obj
+    return paginator.get_page(page_number)
 
 
 @cache_page(20)
@@ -85,8 +84,6 @@ def post_create(request):
         post.author = request.user
         post.save()
         return redirect('posts:profile', author.username)
-    else:
-        form = PostForm()
     context = {
         'form': form,
     }
