@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from ..models import Post, Group, Comment, TITLE_CHAR_COUNT
+
+from ..models import TITLE_CHAR_COUNT, Comment, Group, Post
 
 User = get_user_model()
 

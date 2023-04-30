@@ -1,17 +1,17 @@
 import shutil
 import tempfile
 
+from django import forms
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.paginator import Page
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
-from django import forms
-from django.conf import settings
 
 from ..forms import PostForm
-from ..models import Post, Group, Follow
+from ..models import Follow, Group, Post
 
 User = get_user_model()
 COUNT_TEST_POSTS: int = 13
