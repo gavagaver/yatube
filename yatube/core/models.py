@@ -2,10 +2,14 @@ from django.db import models
 
 
 class CreatedModel(models.Model):
-    """Абстрактная модель. Добавляет дату создания."""
+    """
+    Абстрактная модель. Добавляет дату создания.
+
+    :param created: Дата создания объекта модели.
+    """
     created = models.DateTimeField(
-        'Дата создания',
-        auto_now_add=True
+        verbose_name='Дата создания',
+        auto_now_add=True,
     )
 
     class Meta:

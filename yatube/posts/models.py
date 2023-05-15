@@ -37,7 +37,9 @@ class Post(models.Model):
     :param group: Группа, к которой относится пост.
     :param image: Изображение, прикрепленное к посту.
     """
-    text = models.TextField(verbose_name='Текст')
+    text = models.TextField(
+        verbose_name='Текст',
+    )
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',
         auto_now_add=True,
