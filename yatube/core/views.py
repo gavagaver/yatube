@@ -2,16 +2,71 @@ from django.shortcuts import render
 
 
 def page_not_found(request, exception):
-    return render(request, 'core/404.html', {'path': request.path}, status=404)
+    """
+    Класс представления страницы ошибки 404 Page Not Found.
+
+    Аргументы:
+    - request (HttpRequest): объект запроса
+    - exception (Exception): объект исключения
+
+    Возвращает:
+    - HttpResponse: ответ с отображением страницы ошибки 404 Page Not Found
+    """
+    return render(
+        request,
+        template_name='core/404.html',
+        context={'path': request.path},
+        status=404,
+    )
 
 
 def csrf_failure(request, reason=''):
-    return render(request, 'core/403csrf.html')
+    """
+    Класс представления страницы ошибки 403 CSRF.
+
+    Аргументы:
+    - request (HttpRequest): объект запроса
+    - reason (str): причина ошибки
+
+    Возвращает:
+    - HttpResponse: ответ с отображением страницы ошибки 403 CSRF
+    """
+    return render(
+        request,
+        template_name='core/403csrf.html',
+    )
 
 
 def server_error(request):
-    return render(request, 'core/500.html', status=500)
+    """
+    Класс представления страницы ошибки 500 Internal Server Error.
+
+    Аргументы:
+    - request (HttpRequest): объект запроса
+
+    Возвращает:
+    - HttpResponse: ответ с отображением страницы ошибки 500 Internal Server Error
+    """
+    return render(
+        request,
+        template_name='core/500.html',
+        status=500,
+    )
 
 
 def permission_denied(request, exception):
-    return render(request, 'core/403.html', status=403)
+    """
+    Класс представления страницы ошибки 403 Forbidden.
+
+    Аргументы:
+    - request (HttpRequest): объект запроса
+    - exception (Exception): объект исключения
+
+    Возвращает:
+    - HttpResponse: ответ с отображением страницы ошибки 403 Forbidden
+    """
+    return render(
+        request,
+        template_name='core/403.html',
+        status=403,
+    )
