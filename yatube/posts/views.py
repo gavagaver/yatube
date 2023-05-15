@@ -12,7 +12,17 @@ POST_PER_PAGE: int = 10
 User = get_user_model()
 
 
-def ppaginator(request, post_list):
+def make_paginator(request, post_list):
+    """
+    Функция для создания объекта пагинатора.
+
+    Аргументы:
+    - request (HttpRequest): объект запроса
+    - post_list (QuerySet): список постов
+
+    Возвращает:
+    - Page: объект страницы пагинации
+    """
     paginator = Paginator(post_list, POST_PER_PAGE)
     page_number = request.GET.get('page')
     return paginator.get_page(page_number)
@@ -20,7 +30,16 @@ def ppaginator(request, post_list):
 
 @cache_page(20)
 def index(request):
-    page_obj = ppaginator(
+    """
+    Класс представления главной страницы.
+
+    Аргументы:
+    - request (HttpRequest): объект запроса
+
+    Возвращает:
+    - HttpResponse: ответ с отображением страницы
+    """
+    page_obj = make_paginator(
         request,
         Post.objects.select_related('group', 'author').all(),
     )
@@ -31,8 +50,18 @@ def index(request):
 
 
 def group_posts(request, slug):
+    """
+    Класс представления страницы со списком постов в группе.
+
+    Аргументы:
+    - request (HttpRequest): объект запроса
+    - slug (str): уникальный идентификатор группы
+
+    Возвращает:
+    - HttpResponse: ответ с отображением страницы
+    """
     group = get_object_or_404(Group, slug=slug)
-    page_obj = ppaginator(
+    page_obj = make_paginator(
         request,
         group.posts.select_related('author').all(),
     )
@@ -44,8 +73,18 @@ def group_posts(request, slug):
 
 
 def profile(request, username):
+    """
+    Класс представления страницы профиля пользователя.
+
+    Аргументы:
+    - request (HttpRequest): объект запроса
+    - username (str): имя пользователя
+
+    Возвращает:
+    - HttpResponse: ответ с отображением страницы
+    """
     author = get_object_or_404(User, username=username)
-    page_obj = ppaginator(
+    page_obj = make_paginator(
         request,
         author.posts.select_related('group').all()
     )
@@ -61,6 +100,16 @@ def profile(request, username):
 
 
 def post_detail(request, post_id):
+    """
+    Класс представления страницы поста.
+
+    Аргументы:
+    - request (HttpRequest): объект запроса
+    - post_id (int): идентификатор поста
+
+    Возвращает:
+    - HttpResponse: ответ с отображением страницы
+    """
     post = get_object_or_404(Post, id=post_id)
     form = CommentForm()
     comments = post.comments.all()
@@ -75,6 +124,15 @@ def post_detail(request, post_id):
 
 @login_required
 def post_create(request):
+    """
+    Класс представления страницы создания поста.
+
+    Аргументы:
+    - request (HttpRequest): объект запроса
+
+    Возвращает:
+    - HttpResponse: ответ с отображением страницы
+    """
     form = PostForm(
         request.POST or None,
         files=request.FILES or None,
@@ -125,7 +183,7 @@ def add_comment(request, post_id):
 
 @login_required
 def follow_index(request):
-    page_obj = ppaginator(
+    page_obj = make_paginator(
         request,
         Post.objects.filter(author__following__user=request.user).all(),
     )

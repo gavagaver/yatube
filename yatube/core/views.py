@@ -10,7 +10,7 @@ def page_not_found(request, exception):
     - exception (Exception): объект исключения
 
     Возвращает:
-    - HttpResponse: ответ с отображением страницы ошибки 404 Page Not Found
+    - HttpResponse: ответ с отображением страницы
     """
     return render(
         request,
@@ -29,7 +29,7 @@ def csrf_failure(request, reason=''):
     - reason (str): причина ошибки
 
     Возвращает:
-    - HttpResponse: ответ с отображением страницы ошибки 403 CSRF
+    - HttpResponse: ответ с отображением страницы
     """
     return render(
         request,
@@ -45,7 +45,7 @@ def server_error(request):
     - request (HttpRequest): объект запроса
 
     Возвращает:
-    - HttpResponse: ответ с отображением страницы ошибки 500 Internal Server Error
+    - HttpResponse: ответ с отображением страницы
     """
     return render(
         request,
@@ -63,7 +63,7 @@ def permission_denied(request, exception):
     - exception (Exception): объект исключения
 
     Возвращает:
-    - HttpResponse: ответ с отображением страницы ошибки 403 Forbidden
+    - HttpResponse: ответ с отображением страницы
     """
     return render(
         request,
