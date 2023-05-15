@@ -7,15 +7,36 @@ TITLE_CHAR_COUNT: int = 15
 
 
 class Group(models.Model):
+    """
+    Модель группы.
+
+    :param title: Название группы.
+    :param slug: Уникальный идентификатор группы.
+    :param description: Описание группы.
+    """
     title = models.CharField(verbose_name='Название', max_length=200)
     slug = models.SlugField(verbose_name='Линк', unique=True)
     description = models.TextField(verbose_name='Описание')
 
     def __str__(self):
+        """
+        Возвращает строковое представление модели.
+
+        :return: Название группы.
+        """
         return f'{self.title}'
 
 
 class Post(models.Model):
+    """
+    Модель поста.
+
+    :param text: Текст поста.
+    :param pub_date: Дата и время публикации.
+    :param author: Автор поста.
+    :param group: Группа, к которой относится пост.
+    :param image: Изображение, прикрепленное к посту.
+    """
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(
         verbose_name='Дата публикации',
@@ -42,6 +63,11 @@ class Post(models.Model):
     )
 
     def __str__(self):
+        """
+        Возвращает строковое представление модели.
+
+        :return: Текст поста.
+        """
         return f'{self.text[:TITLE_CHAR_COUNT] + "..."}'
 
     class Meta:
@@ -49,6 +75,13 @@ class Post(models.Model):
 
 
 class Comment(CreatedModel):
+    """
+    Модель комментария.
+
+    :param post: Пост, к которому оставлен комментарий.
+    :param author: Автор комментария.
+    :param text: Текст комментария.
+    """
     post = models.ForeignKey(
         Post,
         on_delete=models.CASCADE,
@@ -67,10 +100,21 @@ class Comment(CreatedModel):
     )
 
     def __str__(self):
+        """
+        Возвращает строковое представление модели.
+
+        :return: Текст комментария.
+        """
         return f'{self.text[:TITLE_CHAR_COUNT] + "..."}'
 
 
 class Follow(models.Model):
+    """
+    Модель подписки пользователя на автора.
+
+    :param user: Пользователь, который подписывается на автора.
+    :param author: Автор, на которого подписывается пользователь.
+    """
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
