@@ -151,6 +151,16 @@ def post_create(request):
 
 @login_required
 def post_edit(request, post_id):
+    """
+    Класс представления страницы редактирования поста.
+
+    Аргументы:
+    - request (HttpRequest): объект запроса
+    - post_id (int): идентификатор поста
+
+    Возвращает:
+    - HttpResponse: ответ с отображением страницы
+    """
     edit_post = get_object_or_404(Post, id=post_id)
     if request.user != edit_post.author:
         return redirect('posts:post_detail', post_id)
