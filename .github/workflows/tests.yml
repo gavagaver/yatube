@@ -29,6 +29,14 @@ jobs:
     runs-on: ubuntu-latest
     needs: tests
     steps:
+    - name: send failure message
+      if: failure()
+      uses: appleboy/telegram-action@master
+      with:
+        to: ${{ secrets.TELEGRAM_TO }}
+        token: ${{ secrets.TELEGRAM_TOKEN }}
+        message: Рабочий поток ${{ github.event.repository.name }} / ${{ github.workflow }} не выполнен! Статус задачи ${{ job.status }}    
+      
     - name: send message
       uses: appleboy/telegram-action@master
       with:
