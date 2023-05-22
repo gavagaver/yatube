@@ -31,7 +31,7 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: Рабочий поток ${{ github.event.repository.name }} / ${{ github.workflow }} не выполнен! Статус задачи ${{ job.status }}      
+        message: Ошибка выполнения рабочего потока ${{ github.event.repository.name }} / ${{ github.workflow }}! Шаг ${{ github.step }}      
   
   send_success_message:
     runs-on: ubuntu-latest
