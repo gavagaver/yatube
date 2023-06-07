@@ -29,7 +29,7 @@ python3 manage.py runserver
 ```
 
 ## Стек
-- Python 3
+- Python 3.7
 - Django 2.2
 - SQLite3
 
