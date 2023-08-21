@@ -28,6 +28,16 @@ urlpatterns = [
         views.profile_unfollow,
         name='profile_unfollow'
     ),
+    path(
+        'posts/<int:post_id>/like/',
+        views.like,
+        name='post_like'
+    ),
+    path(
+        'posts/<int:post_id>/unlike/',
+        views.unlike,
+        name='post_unlike'
+    ),
 ]
 
 if settings.DEBUG:
