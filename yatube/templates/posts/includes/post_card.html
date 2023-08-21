@@ -13,4 +13,12 @@
   {% endthumbnail %}
   <p>{{ post.text|linebreaks }}</p>
   <a href="{% url 'posts:post_detail' post.id %}">подробная информация </a>
+  <a href="
+    {% if post.is_liked %}
+      {% url 'posts:post_unlike' post.id %}
+    {% else  %}
+      {% url 'posts:post_like' post.id %}
+    {% endif %}
+  ">Мне нравится {{ post.total_likes }}</a>
+
 </article>
