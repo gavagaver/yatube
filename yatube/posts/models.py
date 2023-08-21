@@ -92,6 +92,7 @@ class Post(models.Model):
         upload_to='posts/',
         blank=True,
     )
+    likes = GenericRelation(Like)
 
     def __str__(self):
         """
@@ -103,6 +104,10 @@ class Post(models.Model):
 
     class Meta:
         ordering = ('-pub_date',)
+
+    @property
+    def total_likes(self):
+        return self.likes.count()
 
 
 class Comment(CreatedModel):
