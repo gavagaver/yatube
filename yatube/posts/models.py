@@ -1,10 +1,9 @@
+from core.models import CreatedModel
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.fields import (GenericForeignKey,
                                                 GenericRelation)
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
-
-from core.models import CreatedModel
 
 User = get_user_model()
 TITLE_CHAR_COUNT: int = 15
@@ -57,8 +56,10 @@ class Like(models.Model):
     )
 
     def __str__(self):
-        return f'{self.user} лайкнул ' \
-               f'{self.content_type} {self.object_id} "{self.content_object}"'
+        return (
+            f'{self.user} лайкнул '
+            f'{self.content_type} {self.object_id} "{self.content_object}"'
+        )
 
 
 class Post(models.Model):
