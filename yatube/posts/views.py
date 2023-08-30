@@ -204,6 +204,18 @@ def follow_index(request):
 
 
 @login_required
+def likes_index(request):
+    page_obj = make_paginator(
+        request,
+        Post.objects.filter(likes__user=request.user).all(),
+    )
+    context = {
+        'page_obj': page_obj,
+    }
+    return render(request, 'posts/like.html', context)
+
+
+@login_required
 def profile_follow(request, username):
     author = get_object_or_404(User, username=username)
     if request.user != author:
