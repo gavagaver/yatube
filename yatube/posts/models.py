@@ -55,6 +55,10 @@ class Like(models.Model):
         'object_id',
     )
 
+    def __str__(self):
+        return f'{self.user} лайкнул ' \
+               f'{self.content_type} {self.object_id} "{self.content_object}"'
+
 
 class Post(models.Model):
     """
