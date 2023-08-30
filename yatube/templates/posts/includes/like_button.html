@@ -1,0 +1,5 @@
+{% if post_is_liked %}
+  <a href="{% url 'posts:post_unlike' post.id %}" class="btn btn-primary">Мне нравится {{ post.total_likes }}</a>
+{% else  %}
+  <a href="{% url 'posts:post_like' post.id %}" class="btn btn-secondary">Мне нравится {{ post.total_likes }}</a>
+{% endif %}

@@ -6,6 +6,7 @@ from django.views.decorators.cache import cache_page
 
 from .forms import CommentForm, PostForm
 from .models import Follow, Group, Post
+from .services import add_like, is_liked, remove_like
 
 POST_PER_PAGE: int = 10
 
@@ -113,11 +114,13 @@ def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     form = CommentForm()
     comments = post.comments.all()
+    post_is_liked = is_liked(post, request.user)
     context = {
         'post': post,
         'form': form,
         'comments': comments,
         'post_id': post_id,
+        'post_is_liked': post_is_liked,
     }
     return render(request, 'posts/post_detail.html', context)
 
@@ -204,6 +207,18 @@ def follow_index(request):
 
 
 @login_required
+def likes_index(request):
+    page_obj = make_paginator(
+        request,
+        Post.objects.filter(likes__user=request.user).all(),
+    )
+    context = {
+        'page_obj': page_obj,
+    }
+    return render(request, 'posts/like.html', context)
+
+
+@login_required
 def profile_follow(request, username):
     author = get_object_or_404(User, username=username)
     if request.user != author:
@@ -218,3 +233,17 @@ def profile_unfollow(request, username):
     if follower.exists():
         follower.delete()
     return redirect('posts:profile', username=author)
+
+
+@login_required
+def like(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    add_like(post, request.user)
+    return redirect('posts:post_detail', post_id=post_id)
+
+
+@login_required
+def unlike(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    remove_like(post, request.user)
+    return redirect('posts:post_detail', post_id=post_id)

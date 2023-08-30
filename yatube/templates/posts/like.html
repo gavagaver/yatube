@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-  Последние обновления на сайте
+  Понравившиеся вам посты
 {% endblock %}
 
 {% block content %}
-  <h1>Последние обновления на сайте</h1>
+  <h1>Понравившиеся вам посты</h1>
   {% include 'posts/includes/switcher.html' %}
   {% for post in page_obj%}
     {% include 'posts/includes/post_card.html' %}
@@ -14,6 +14,7 @@
         <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a>
       {% endif %}
     </p>
+    {% if not forloop.last %}<hr>{% endif %}
   {% endfor %}
 
   {% include 'posts/includes/paginator.html' %}

@@ -1,5 +1,8 @@
 from core.models import CreatedModel
 from django.contrib.auth import get_user_model
+from django.contrib.contenttypes.fields import (GenericForeignKey,
+                                                GenericRelation)
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 User = get_user_model()
@@ -25,6 +28,38 @@ class Group(models.Model):
         :return: Название группы.
         """
         return f'{self.title}'
+
+
+class Like(models.Model):
+    """
+    Модель лайка пользователем поста.
+
+    :param user: Пользователь, который поставил лайк под постом.
+    :param content_type:
+    :param object_id:
+    :param content_object:
+    """
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='likes',
+        verbose_name='Пользователь',
+    )
+    content_type = models.ForeignKey(
+        ContentType,
+        on_delete=models.CASCADE,
+    )
+    object_id = models.PositiveIntegerField()
+    content_object = GenericForeignKey(
+        'content_type',
+        'object_id',
+    )
+
+    def __str__(self):
+        return (
+            f'{self.user} лайкнул '
+            f'{self.content_type} {self.object_id} "{self.content_object}"'
+        )
 
 
 class Post(models.Model):
@@ -63,6 +98,7 @@ class Post(models.Model):
         upload_to='posts/',
         blank=True,
     )
+    likes = GenericRelation(Like)
 
     def __str__(self):
         """
@@ -74,6 +110,10 @@ class Post(models.Model):
 
     class Meta:
         ordering = ('-pub_date',)
+
+    @property
+    def total_likes(self):
+        return self.likes.count()
 
 
 class Comment(CreatedModel):
