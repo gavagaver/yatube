@@ -6,6 +6,7 @@ from django.views.decorators.cache import cache_page
 
 from .forms import CommentForm, PostForm
 from .models import Follow, Group, Post
+from .services import is_liked, add_like, remove_like
 
 POST_PER_PAGE: int = 10
 
@@ -230,3 +231,17 @@ def profile_unfollow(request, username):
     if follower.exists():
         follower.delete()
     return redirect('posts:profile', username=author)
+
+
+@login_required
+def like(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    add_like(post, request.user)
+    return redirect('posts:post_detail', post_id=post_id)
+
+
+@login_required
+def unlike(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    remove_like(post, request.user)
+    return redirect('posts:post_detail', post_id=post_id)
