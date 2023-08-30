@@ -6,7 +6,7 @@ from django.views.decorators.cache import cache_page
 
 from .forms import CommentForm, PostForm
 from .models import Follow, Group, Post
-from .services import is_liked, add_like, remove_like
+from .services import add_like, is_liked, remove_like
 
 POST_PER_PAGE: int = 10
 
