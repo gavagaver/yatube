@@ -114,11 +114,13 @@ def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     form = CommentForm()
     comments = post.comments.all()
+    post_is_liked = is_liked(post, request.user)
     context = {
         'post': post,
         'form': form,
         'comments': comments,
         'post_id': post_id,
+        'post_is_liked': post_is_liked,
     }
     return render(request, 'posts/post_detail.html', context)
 
