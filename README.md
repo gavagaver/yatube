@@ -55,6 +55,16 @@ pip install -r requirements.txt
 cd yatube
 ``` 
 
+1. [ ] Создать миграции
+###### Windows:
+```bash
+python manage.py makemigrations
+```
+###### Linux:
+```bash
+python3 manage.py makemigrations
+```
+
 1. [ ] Применить миграции
 ###### Windows:
 ```bash
@@ -63,6 +73,16 @@ python manage.py migrate
 ###### Linux:
 ```bash
 python3 manage.py migrate
+```
+
+1. [ ] Создать супер-пользователя
+###### Windows:
+```bash
+python manage.py createsuperuser
+```
+###### Linux:
+```bash
+python3 manage.py createsuperuser
 ```
 
 1. [ ] Запустить проект
